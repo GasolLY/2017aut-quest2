@@ -30,9 +30,10 @@
 
 限制语言为 `C/C++` 。
 
-请 fork `git@github.com:klx3300/2017aut-quest2.git`
+请 fork `git@github.com:FluorineDog/2017aut-quest2.git`
 
-如果 `API` 出现问题请开 issue ，我会酌情进行修改。
+<!-- Issue: Can't open issue
+如果 `API` 出现问题请开 issue ，我会酌情进行修改。-->
 
 需要的 `API` 已经在对应的头文件当中给出，请修改对应的结构体或增加你自己的结构体，并且实现对应的函数。
 

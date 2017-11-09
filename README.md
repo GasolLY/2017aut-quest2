@@ -30,7 +30,7 @@
 
 限制语言为 `C/C++` 。
 
-请 fork `git@github.com:klx3300/2017aut-quest2.git`
+请 fork `git@github.com:FluorineDog/2017aut-quest2.git`
 
 如果 `API` 出现问题请开 issue ，我会酌情进行修改。
 

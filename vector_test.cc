@@ -1,5 +1,5 @@
 /**
- * Created by kylerky, adapted to cxx api by recolic.
+ * By recolic, Nov 10.
  */
 
 #include <array>
@@ -9,8 +9,6 @@
 #include <utility>
 #include <vector>
 #include <functional>
-
-
 #include "test_utils.hpp"
 using rlib::println;
 
@@ -18,63 +16,73 @@ std::default_random_engine rand_eng(810);
 std::uniform_real_distribution<double> distribution(0, 100);
 double m_rand() {return distribution(rand_eng);}
 
-void timed_func(std::function<void(void)> f, const std::string &info)
+template <class operation_t, typename... args_t>
+void timed_func(const std::string &info, std::function<operation_t> f, args_t... args)
 {
     println(info, "launched.");
     auto start = std::chrono::high_resolution_clock::now();
-    f();
+    f(args ...);
     auto end = std::chrono::high_resolution_clock::now();
     println(info, "used", std::to_string((end-start).count()), 's');
 }
 
-void repeat(size_t count, std::function<void(void)> f)
+template <class operation_t, typename... args_t>
+void repeat(size_t count, std::function<operation_t> f, args_t... args)
 {
     for(size_t cter = 0; cter < count; ++cter)
-        f();
+        f(args ...);
 }
 
 int main()
 {
-    Lab::vector<double> bufa;
-    std::vector<double> bufb;
+    using data_t = double;
+    Lab::vector<data_t> vcta;
+    std::vector<data_t> vctb;
+    using op_arg1_t = Lab::vector<data_t>;
+    using op_arg2_t = std::vector<data_t>;
+    #define op_args_t op_arg1_t, op_arg2_t
+    using operation_t = void(op_args_t);
 
-    auto co_push_back = [&]{
+    auto co_push_back = [](auto bufa, auto bufb){
         auto val = m_rand();
         bufa.push_back(val);
         bufb.push_back(val);
     };
 
-    auto co_pop_back = [&]{
+    auto co_pop_back = [](auto bufa, auto bufb){
         bufa.pop_back();
         bufb.pop_back();
     };
 
-    auto co_erase = [&]{
+    auto co_erase = [](auto bufa, auto bufb){
         bufa.erase(bufa.begin() + 10);
         bufb.erase(bufb.begin() + 10);
     };
 
-    auto co_clear = [&]{
+    auto co_clear = [](auto bufa, auto bufb){
         bufa.clear();
         bufb.clear();
     };
 
-    auto co_shrink = [&]{
+    auto co_shrink = [](auto bufa, auto bufb){
         bufa.shrink_to_fit();
         bufb.shrink_to_fit();
     };
 
-    auto co_reserve = [&]{
+    auto co_reserve = [](auto bufa, auto bufb){
         bufa.reserve(10000);
         bufb.reserve(10000);
     };
 
-    #define TEST(count, operation, desc) VECTOR_ASSERT_EQUIVALENCE(bufa, bufb, std::bind(timed_func, \
-                                            std::function<void(void)>(std::bind(repeat, count, operation)), desc))
+    using namespace std::placeholders;
+    #define TEST(count, operation, desc) VECTOR_ASSERT_EQUIVALENCE(vcta, vctb, std::function<operation_t>( \
+                                            std::bind(timed_func<operation_t, op_args_t>, desc, \
+                                            std::function<operation_t>(std::bind(repeat<operation_t, op_args_t>, count, operation, _1, _2)), \
+                                        _1, _2)))
     //VECTOR_ASSERT_EQUIVALENCE(bufa, bufb, timed_func(std::bind(repeat, 1000000, co_push_back), "randomPush"));
     //VECTOR_ASSERT_EQUIVALENCE(bufa, bufb, timed_func(std::bind(repeat, 2333, co_push_back), "randomPush2"));
     TEST(1000, co_push_back, "push1");
-    TEST(1000000, co_push_back, "push2");
+    /*TEST(1000000, co_push_back, "push2");
     TEST(9999, co_pop_back, "pop1");
     TEST(5432, co_push_back, "push3");
     TEST(123, co_pop_back, "pop2");
@@ -88,5 +96,5 @@ int main()
     TEST(2, co_reserve, "reserve1");
     TEST(666, co_push_back, "push7");
     TEST(2, co_shrink, "shrink2");
-    return 0;
+    */return 0;
 }

@@ -103,14 +103,15 @@ namespace rlib {
         } \
     } while(false)
 
-//operation must be a templated callable object, usually templated lambda.
+// -- operation must be a templated callable object, usually templated lambda.
+// NEW: operation must fuck two buf at same time.
 #define ASSERT_EQUIVALENCE(bufA, bufB, operation, equal_checker) \
     do { \
         static_assert(std::is_same<rlib::is_callable<decltype(equal_checker<double>)>::type, \
                     std::true_type>::value, \
                     "equal_checker is not callable"); \
         dynamic_assert(equal_checker(bufA, bufB), "given buf is not equal."); \
-        operation(); \
+        operation(bufA, bufB); \
         dynamic_assert(equal_checker(bufA, bufB), "operation failed."); \
     } while(false)
 

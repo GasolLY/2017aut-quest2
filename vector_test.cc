@@ -53,8 +53,8 @@ int main()
     };
 
     auto co_erase = [](auto &bufa, auto &bufb){
-        bufa.erase(bufa.begin());
-        bufb.erase(bufb.begin());
+        bufa.erase(bufa.begin() + 10);
+        bufb.erase(bufb.begin() + 10);
     };
 
     auto co_clear = [](auto &bufa, auto &bufb){
@@ -77,8 +77,6 @@ int main()
                                             std::bind(timed_func<operation_t, op_args_t>, desc, \
                                             std::function<operation_t>(std::bind(repeat<operation_t, op_args_t>, count, operation, _1, _2)), \
                                         _1, _2)))
-    //VECTOR_ASSERT_EQUIVALENCE(bufa, bufb, timed_func(std::bind(repeat, 1000000, co_push_back), "randomPush"));
-    //VECTOR_ASSERT_EQUIVALENCE(bufa, bufb, timed_func(std::bind(repeat, 2333, co_push_back), "randomPush2"));
     TEST(1000, co_push_back, "push1");
     TEST(1000000, co_push_back, "push2");
     TEST(9999, co_pop_back, "pop1");

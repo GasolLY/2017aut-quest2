@@ -17,5 +17,5 @@ priority_queue:
 unordered_map:
 	g++ -std=c++14 unordered_map_test.cc -o unordered_map.test -msse4.2
 
-
-
+all: vector list set priority_queue unordered_map
+	echo "All done."

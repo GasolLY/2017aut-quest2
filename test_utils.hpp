@@ -139,12 +139,12 @@ bool vector_equal(const Lab::vector<data_t> &vcta, const std::vector<data_t> &vc
 #include <list>
 
 template<typename data_t>
-bool list_equal(const Lab::list<data_t> &vcta, const std::list<data_t> &vctb)
+bool list_equal(const Lab::list<data_t> &bufa, const std::list<data_t> &bufb)
 {
-    if(vcta.size() != vctb.size()) return false;
-    Lab::list<data_t> &fake_vcta = const_cast<Lab::list<data_t> &>(vcta);
-    for(auto ia = fake_vcta.begin(), ib = vctb.begin();
-        ia != fake_vcta.end() && ib != vctb.end();
+    if(bufa.size() != bufb.size()) return false;
+    Lab::list<data_t> &fake_bufa = const_cast<Lab::list<data_t> &>(bufa);
+    for(auto ia = fake_bufa.begin(), ib = bufb.begin();
+        ia != fake_bufa.end() && ib != bufb.end();
         ++ia, ++ib)
         {
             if(*ia != *ib) return false;
@@ -158,12 +158,12 @@ bool list_equal(const Lab::list<data_t> &vcta, const std::list<data_t> &vctb)
 #include <set>
 
 template<typename data_t>
-bool set_equal(const Lab::set<data_t> &vcta, const std::set<data_t> &vctb)
+bool set_equal(const Lab::set<data_t> &bufa, const std::set<data_t> &bufb)
 {
-    if(vcta.size() != vctb.size()) return false;
-    Lab::set<data_t> &fake_vcta = const_cast<Lab::set<data_t> &>(vcta);
-    for(auto ia = fake_vcta.begin(), ib = vctb.begin();
-        ia != fake_vcta.end() && ib != vctb.end();
+    if(bufa.size() != bufb.size()) return false;
+    Lab::set<data_t> &fake_bufa = const_cast<Lab::set<data_t> &>(bufa);
+    for(auto ia = fake_bufa.begin(), ib = bufb.begin();
+        ia != fake_bufa.end() && ib != bufb.end();
         ++ia, ++ib)
         {
             if(*ia != *ib) return false;
@@ -172,5 +172,26 @@ bool set_equal(const Lab::set<data_t> &vcta, const std::set<data_t> &vctb)
 }
 #define SET_ASSERT_EQUIVALENCE(bufA, bufB, operation) ASSERT_EQUIVALENCE(bufA, bufB, operation, set_equal)
 
+//priority_queue
+#include "lab_priority_queue.hpp"
+#include <queue>
 
+template<typename data_t>
+bool priority_queue_equal(const Lab::priority_queue<data_t> &bufa, const std::priority_queue<data_t> &bufb)
+{
+    return true;
+}
+#define PRIORITY_QUEUE_ASSERT_EQUIVALENCE(bufA, bufB, operation) ASSERT_EQUIVALENCE(bufA, bufB, operation, priority_queue_equal)
+template<typename data_t>
+bool priority_queue_destroy_and_check(Lab::priority_queue<data_t> &bufa, std::priority_queue<data_t> &bufb)
+{
+    if(bufa.size() != bufb.size()) return false;
+    while(bufb.size())
+    {
+        if(bufa.top() != bufb.top()) return false;
+        bufa.pop();
+        bufb.pop();
+    }
+    return true;
+}
 

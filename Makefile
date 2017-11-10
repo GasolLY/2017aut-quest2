@@ -11,5 +11,8 @@ list:
 set:
 	g++ -std=c++14 set_test.cc -o set.test -msse4.2
 
+priority_queue:
+	g++ -std=c++14 priority_queue_test.cc -o priority_queue.test -msse4.2
+
 
 

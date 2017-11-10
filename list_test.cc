@@ -5,7 +5,6 @@
 #include <chrono>
 #include <iostream>
 #include <random>
-#include <vector>
 #include <functional>
 #include "test_utils.hpp"
 using rlib::println;

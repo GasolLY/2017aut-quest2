@@ -153,5 +153,24 @@ bool list_equal(const Lab::list<data_t> &vcta, const std::list<data_t> &vctb)
 }
 #define LIST_ASSERT_EQUIVALENCE(bufA, bufB, operation) ASSERT_EQUIVALENCE(bufA, bufB, operation, list_equal)
 
+//set
+#include "lab_set.hpp"
+#include <set>
+
+template<typename data_t>
+bool set_equal(const Lab::set<data_t> &vcta, const std::set<data_t> &vctb)
+{
+    if(vcta.size() != vctb.size()) return false;
+    Lab::set<data_t> &fake_vcta = const_cast<Lab::set<data_t> &>(vcta);
+    for(auto ia = fake_vcta.begin(), ib = vctb.begin();
+        ia != fake_vcta.end() && ib != vctb.end();
+        ++ia, ++ib)
+        {
+            if(*ia != *ib) return false;
+        }
+    return true;
+}
+#define SET_ASSERT_EQUIVALENCE(bufA, bufB, operation) ASSERT_EQUIVALENCE(bufA, bufB, operation, set_equal)
+
 
 

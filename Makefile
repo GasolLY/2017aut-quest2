@@ -14,5 +14,8 @@ set:
 priority_queue:
 	g++ -std=c++14 priority_queue_test.cc -o priority_queue.test -msse4.2
 
+unordered_map:
+	g++ -std=c++14 unordered_map_test.cc -o unordered_map.test -msse4.2
+
 
 

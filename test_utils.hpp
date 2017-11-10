@@ -195,3 +195,28 @@ bool priority_queue_destroy_and_check(Lab::priority_queue<data_t> &bufa, std::pr
     return true;
 }
 
+//unordered_map
+#include "lab_unordered_map.hpp"
+#include <unordered_map>
+
+template<typename key_t, typename data_t>
+bool unordered_map_equal(const Lab::unordered_map<key_t, data_t> &bufa, const std::unordered_map<key_t, data_t> &bufb)
+{
+    if(bufa.size() != bufb.size()) return false;
+    Lab::unordered_map<key_t, data_t> &fake_bufa = const_cast<Lab::unordered_map<key_t, data_t> &>(bufa);
+    for(auto ia = fake_bufa.begin(), ib = bufb.begin();
+        ia != fake_bufa.end() && ib != bufb.end();
+        ++ia, ++ib)
+        {
+            if(*ia != *ib) return false;
+            if(fake_bufa.find((*ib).first) != ia) return false;
+        }
+    return true;
+}
+template<typename key_data_t>
+bool _unordered_map_equal(const Lab::unordered_map<key_data_t, key_data_t> &bufa, const std::unordered_map<key_data_t, key_data_t> &bufb)
+{
+    return unordered_map_equal(bufa, bufb);
+}
+#define UNORDERED_MAP_ASSERT_EQUIVALENCE(bufA, bufB, operation) ASSERT_EQUIVALENCE(bufA, bufB, operation, _unordered_map_equal)
+

@@ -3,5 +3,8 @@ def:
 	exit 1
 
 vector:
-	g++ -std=c++14 vector_test.cc -o vector_test -msse4.2
-	./vector_test
+	g++ -std=c++14 vector_test.cc -o vector.test -msse4.2
+
+debug_vector:
+	g++ -g -std=c++14 vector_test.cc -o vector.test -msse4.2
+
